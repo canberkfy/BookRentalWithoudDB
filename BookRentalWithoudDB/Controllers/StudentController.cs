@@ -11,7 +11,7 @@ namespace BookRentalWithoudDB.Controllers
         {
             StudentRespository repository = new StudentRespository();
 
-            var students=repository.GetAllStudents();
+            var students = repository.GetAllStudents();
             return View(students);
         }
 
@@ -19,10 +19,11 @@ namespace BookRentalWithoudDB.Controllers
         {
             StudentRespository repository = new StudentRespository();
             var student = repository.GetStudent(id);
-            if(student==null)
+            if (student == null)
             {
                 return NotFound();
-            } else
+            }
+            else
             {
                 return View(student);
             }
@@ -41,5 +42,42 @@ namespace BookRentalWithoudDB.Controllers
             respository.Insert(student);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            StudentRespository repository = new StudentRespository();
+            repository.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            StudentRespository repository = new StudentRespository();
+            var student = repository.GetStudent(id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Student student)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(student);
+            }
+
+            StudentRespository repository = new StudentRespository();
+            repository.Update(student);
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

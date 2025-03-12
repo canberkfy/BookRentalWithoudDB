@@ -10,15 +10,17 @@ namespace BookRentalWithoudDB.Data
         static List<Student> data = new List<Student> {
             new Student {ID=1, Name="Hüseyin", Surname="Şimşek", BirthDate = new DateTime(1990,1,1) },
             new Student {ID=2, Name="Mehmet", Surname="Yıldız", BirthDate = new DateTime(2001,1,1) },
-            new Student {ID=4, Name="Ayşe", Surname="Kaya", BirthDate = new DateTime(2004,1,1) }
+            new Student {ID=3, Name="Ayşe", Surname="Kaya", BirthDate = new DateTime(2004,1,1) }
         };
 
 
-        public List<Student> GetAllStudents() { 
+        public List<Student> GetAllStudents()
+        {
             return data;  //"Select * from students";
         }
 
-        public Student GetStudent(int id) { // select * from students where ID=1
+        public Student GetStudent(int id)
+        { // select * from students where ID=1
             Student result = data.Where(s => s.ID == id).FirstOrDefault();
 
             return result;
@@ -26,7 +28,7 @@ namespace BookRentalWithoudDB.Data
 
         public void Delete(int id)
         {
-             data.RemoveAll(d => d.ID==id);
+            data.RemoveAll(d => d.ID == id);
         }
         public void Insert(Student student)
         {
@@ -34,13 +36,15 @@ namespace BookRentalWithoudDB.Data
         }
         public void Update(Student student)
         {
-            var studentInDB = data.Where(s => s.ID == student.ID)
-                .FirstOrDefault();
+            var studentInDB = data.FirstOrDefault(s => s.ID == student.ID);
 
-            studentInDB.Name = student.Name;
-            studentInDB.Surname = student.Surname;
-            studentInDB.BirthDate = student.BirthDate;
-            
+            if (studentInDB != null)
+            {
+                studentInDB.Name = student.Name;
+                studentInDB.Surname = student.Surname;
+                studentInDB.BirthDate = student.BirthDate;
+            }
+
         }
 
     }
